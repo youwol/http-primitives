@@ -30,7 +30,8 @@ template = Template(
               loadDependencies=["rxjs"]
           )
         ),
-    userGuide=True
+    userGuide=True,
+    testConfig="https://github.com/youwol/integration-tests-conf",
     )
 
 generate_template(template)
