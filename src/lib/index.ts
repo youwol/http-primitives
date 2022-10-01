@@ -4,4 +4,4 @@ export * from './utils'
 export * from './router'
 export * from './ws-utils'
 
-export * as PyYouwol from './py-youwol'
+export * as LocalYouwol from './local-youwol'

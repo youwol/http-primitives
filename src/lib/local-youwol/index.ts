@@ -1,3 +1,3 @@
-export * from './py-youwol.client'
+export * from './client'
 export * from './utils'
 export * from './interfaces'

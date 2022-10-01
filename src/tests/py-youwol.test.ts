@@ -1,7 +1,7 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair -- to not have problem
 /* eslint-disable jest/no-done-callback -- eslint-comment It is required because */
 
-import { PyYouwolClient, setupLocalYouwol$ } from '../lib/py-youwol'
+import { Client, setup$ } from '../lib/local-youwol'
 import {
     expectAttributes,
     HTTPError,
@@ -12,16 +12,16 @@ import {
 } from '../lib'
 import { combineLatest, of } from 'rxjs'
 import { take, tap } from 'rxjs/operators'
-import { GetEnvironmentStatusResponse } from '../lib/py-youwol/routers'
+import { GetEnvironmentStatusResponse } from '../lib/local-youwol/routers'
 
-let pyYouwol: PyYouwolClient
+let pyYouwol: Client
 
 beforeAll(async (done) => {
-    setupLocalYouwol$({
+    setup$({
         localOnly: true,
         email: 'int_tests_yw-users@test-user',
     }).subscribe(() => {
-        pyYouwol = new PyYouwolClient()
+        pyYouwol = new Client()
         done()
     })
 })
@@ -73,7 +73,7 @@ test('pyYouwol.admin.environment.status', (done) => {
         })
 })
 
-function getEnvironment<TContext extends { localYouwol: PyYouwolClient }>({
+function getEnvironment<TContext extends { localYouwol: Client }>({
     authorizedErrors,
     newContext,
     sideEffects,

@@ -1,6 +1,6 @@
 import { CustomCommandsRouter } from './custom-commands'
 import { EnvironmentRouter } from './environment'
-import { WsRouter } from '../py-youwol.client'
+import { WsRouter } from '../client'
 import { Router } from '../../../lib'
 
 export class AdminRouter extends Router {

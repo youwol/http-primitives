@@ -3,7 +3,7 @@ import {
     LoginResponse,
     GetEnvironmentStatusResponse,
 } from './interfaces'
-import { WsRouter } from '../../py-youwol.client'
+import { WsRouter } from '../../client'
 import {
     CallerRequestOptions,
     filterCtxMessage,

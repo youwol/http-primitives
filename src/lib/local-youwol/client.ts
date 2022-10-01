@@ -33,7 +33,7 @@ export class WsRouter {
     }
 }
 
-export class PyYouwolClient extends RootRouter {
+export class Client extends RootRouter {
     public readonly admin: AdminRouter
     public readonly authorization: AuthorizationRouter
 
@@ -48,7 +48,7 @@ export class PyYouwolClient extends RootRouter {
             basePath: '',
             headers,
         })
-        this.admin = new AdminRouter(this, PyYouwolClient.ws)
+        this.admin = new AdminRouter(this, Client.ws)
         this.authorization = new AuthorizationRouter(this)
     }
 
@@ -69,6 +69,6 @@ export class PyYouwolClient extends RootRouter {
     }
 
     static startWs$() {
-        return PyYouwolClient.ws.startWs$()
+        return Client.ws.startWs$()
     }
 }

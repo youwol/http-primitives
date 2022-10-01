@@ -1,15 +1,15 @@
-import { PyYouwolClient } from './py-youwol.client'
+import { Client } from './client'
 import { mergeMap } from 'rxjs/operators'
 import { RootRouter } from '../../lib'
 import 'isomorphic-fetch'
 
 export function resetPyYouwolDbs$(headers: { [k: string]: string } = {}) {
-    return new PyYouwolClient(headers).admin.customCommands.doGet$({
+    return new Client(headers).admin.customCommands.doGet$({
         name: 'reset',
     })
 }
 
-export function setupLocalYouwol$(
+export function setup$(
     {
         localOnly,
         email,
@@ -25,9 +25,9 @@ export function setupLocalYouwol$(
     }
     RootRouter.Headers = headers
 
-    return PyYouwolClient.startWs$().pipe(
+    return Client.startWs$().pipe(
         mergeMap(() =>
-            new PyYouwolClient().admin.environment.login$({
+            new Client().admin.environment.login$({
                 body: { email },
             }),
         ),
