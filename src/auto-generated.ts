@@ -44,7 +44,7 @@ const entries = {
 export const setup = {
     name:'@youwol/http-primitives',
         assetId:'QHlvdXdvbC9odHRwLXByaW1pdGl2ZXM=',
-    version:'0.1.0',
+    version:'0.1.1',
     shortDescription:"HTTP utilities and base classes for YouWol clients",
     developerDocumentation:'https://platform.youwol.com/applications/@youwol/cdn-explorer/latest?package=@youwol/http-primitives',
     npmPackage:'https://www.npmjs.com/package/@youwol/http-primitives',
@@ -79,7 +79,7 @@ export const setup = {
         const parameters = installParameters || {}
         const scripts = [
             ...(parameters.scripts || []),
-            `@youwol/http-primitives#0.1.0~dist/@youwol/http-primitives/${entry.name}.js`
+            `@youwol/http-primitives#0.1.1~dist/@youwol/http-primitives/${entry.name}.js`
         ]
         const modules = [
             ...(parameters.modules || []),
