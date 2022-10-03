@@ -17,16 +17,19 @@ export class Shell<T> {
     }
 }
 
-export function wrap<TShell, TResp, _TContext>({
+export type ShellWrapperOptions<TShell, TResp> = {
+    authorizedErrors?: (resp) => boolean
+    sideEffects?: (resp: TResp, shell?: TShell) => void
+    newShell?: (shell: TShell, resp: TResp) => TShell
+}
+
+export function wrap<TShell, TResp>({
     observable,
     authorizedErrors,
     sideEffects,
     newShell,
-}: {
+}: ShellWrapperOptions<TShell, TResp> & {
     observable: (shell: TShell) => HTTPResponse$<TResp>
-    authorizedErrors?: (resp) => boolean
-    sideEffects: (resp: TResp, shell?: TShell) => void
-    newShell?: (shell: TShell, resp: TResp) => TShell
 }): OperatorFunction<TShell, TShell> {
     authorizedErrors = authorizedErrors || (() => false)
     return (source$: Observable<TShell>) => {
@@ -56,7 +59,7 @@ export function wrap<TShell, TResp, _TContext>({
                     }),
                     map((resp) => resp as TResp),
                     tap((resp) => {
-                        sideEffects(resp, shell)
+                        sideEffects && sideEffects(resp, shell)
                     }),
                     map((resp) => {
                         if (!newShell) {
@@ -97,7 +100,7 @@ export function send<TResp, TContext>({
     sideEffects?: (resp, shell: Shell<TContext>) => void
     newContext?: (shell: Shell<TContext>, resp: TResp) => TContext
 }) {
-    return wrap<Shell<TContext>, TResp, TContext>({
+    return wrap<Shell<TContext>, TResp>({
         observable: (shell: Shell<TContext>) => {
             const { commandType, path, nativeOptions, monitoring } =
                 inputs(shell)

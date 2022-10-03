@@ -85,7 +85,7 @@ function getEnvironment<TContext extends { localYouwol: Client }>({
         resp: GetEnvironmentStatusResponse,
     ) => TContext
 } = {}) {
-    return wrap<Shell<TContext>, GetEnvironmentStatusResponse, TContext>({
+    return wrap<Shell<TContext>, GetEnvironmentStatusResponse>({
         observable: (shell: Shell<TContext>) =>
             shell.context.localYouwol.admin.environment
                 .getStatus$()
