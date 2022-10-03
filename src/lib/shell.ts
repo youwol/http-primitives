@@ -10,8 +10,6 @@ import {
     send$,
 } from './utils'
 
-export type ManagedError = 'ManagedError'
-
 export class Shell<T> {
     context: T
     constructor(params: { context?: T; [k: string]: unknown }) {
