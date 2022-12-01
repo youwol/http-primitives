@@ -19,7 +19,7 @@ let pyYouwol: Client
 beforeAll(async (done) => {
     setup$({
         localOnly: true,
-        email: 'int_tests_yw-users@test-user',
+        authId: 'int_tests_yw-users@test-user',
     }).subscribe(() => {
         pyYouwol = new Client()
         done()
@@ -28,7 +28,9 @@ beforeAll(async (done) => {
 
 test('pyYouwol.admin.environment.login', (done) => {
     pyYouwol.admin.environment
-        .login$({ body: { email: 'int_tests_yw-users_bis@test-user' } })
+        .login$({
+            body: { authId: 'int_tests_yw-users_bis@test-user', envId: 'prod' },
+        })
         .pipe(raiseHTTPErrors())
         .subscribe((resp) => {
             expectAttributes(resp, ['id', 'name', 'email', 'memberOf'])
@@ -46,12 +48,10 @@ function expectEnvironment(resp) {
         'remotesInfo',
     ])
     expectAttributes(resp.configuration, [
-        'availableProfiles',
         'httpPort',
-        'openidHost',
         'commands',
-        'userEmail',
-        'selectedRemote',
+        'currentConnection',
+        'remotes',
         'pathsBook',
     ])
 }
