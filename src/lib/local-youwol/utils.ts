@@ -12,11 +12,18 @@ export function resetPyYouwolDbs$(headers: { [k: string]: string } = {}) {
 export function setup$(
     {
         localOnly,
-        email,
+        authId,
+        envId,
         pyYouwolPort,
-    }: { localOnly?: boolean; email?: string; pyYouwolPort?: number } = {
+    }: {
+        localOnly?: boolean
+        authId?: string
+        envId?: string
+        pyYouwolPort?: number
+    } = {
         localOnly: true,
-        email: 'int_tests_yw-users@test-user',
+        authId: 'int_tests_yw-users@test-user',
+        envId: 'prod',
     },
 ) {
     RootRouter.HostName = `http://localhost:${pyYouwolPort || 2001}`
@@ -28,7 +35,10 @@ export function setup$(
     return Client.startWs$().pipe(
         mergeMap(() =>
             new Client().admin.environment.login$({
-                body: { email },
+                body: {
+                    authId: authId || 'int_tests_yw-users@test-user',
+                    envId: envId || 'prod',
+                },
             }),
         ),
         mergeMap(() => {
