@@ -16,7 +16,7 @@ import { GetEnvironmentStatusResponse } from '../lib/local-youwol/routers'
 
 let pyYouwol: Client
 
-beforeAll(async (done) => {
+beforeAll((done) => {
     setup$({
         localOnly: true,
         authId: 'int_tests_yw-users@test-user',
