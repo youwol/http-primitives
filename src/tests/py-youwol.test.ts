@@ -51,7 +51,6 @@ function expectEnvironment(resp) {
         'httpPort',
         'commands',
         'currentConnection',
-        'remotes',
         'pathsBook',
     ])
 }
