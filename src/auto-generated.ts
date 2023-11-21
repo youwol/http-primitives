@@ -1,7 +1,7 @@
 
 const runTimeDependencies = {
     "externals": {
-        "rxjs": "^6.5.5"
+        "rxjs": "^7.5.6"
     },
     "includedInBundle": {}
 }
@@ -9,20 +9,20 @@ const externals = {
     "rxjs": {
         "commonjs": "rxjs",
         "commonjs2": "rxjs",
-        "root": "rxjs_APIv6"
+        "root": "rxjs_APIv7"
     },
     "rxjs/operators": {
         "commonjs": "rxjs/operators",
         "commonjs2": "rxjs/operators",
         "root": [
-            "rxjs_APIv6",
+            "rxjs_APIv7",
             "operators"
         ]
     }
 }
 const exportedSymbols = {
     "rxjs": {
-        "apiKey": "6",
+        "apiKey": "7",
         "exportedSymbol": "rxjs"
     }
 }
@@ -43,13 +43,13 @@ const entries = {
 export const setup = {
     name:'@youwol/http-primitives',
         assetId:'QHlvdXdvbC9odHRwLXByaW1pdGl2ZXM=',
-    version:'0.1.2',
+    version:'0.2.1-wip',
     shortDescription:"HTTP utilities and base classes for YouWol clients",
-    developerDocumentation:'https://platform.youwol.com/applications/@youwol/cdn-explorer/latest?package=@youwol/http-primitives',
+    developerDocumentation:'https://platform.youwol.com/applications/@youwol/cdn-explorer/latest?package=@youwol/http-primitives&tab=doc',
     npmPackage:'https://www.npmjs.com/package/@youwol/http-primitives',
     sourceGithub:'https://github.com/youwol/http-primitives',
     userGuide:'https://l.youwol.com/doc/@youwol/http-primitives',
-    apiVersion:'01',
+    apiVersion:'02',
     runTimeDependencies,
     externals,
     exportedSymbols,
@@ -60,7 +60,7 @@ export const setup = {
     },
 
     installMainModule: ({cdnClient, installParameters}:{
-        cdnClient:{install:(unknown) => Promise<Window>},
+        cdnClient:{install:(unknown) => Promise<WindowOrWorkerGlobalScope>},
         installParameters?
     }) => {
         const parameters = installParameters || {}
@@ -74,12 +74,12 @@ export const setup = {
             modules,
             scripts,
         }).then(() => {
-            return window[`@youwol/http-primitives_APIv01`]
+            return window[`@youwol/http-primitives_APIv02`]
         })
     },
     installAuxiliaryModule: ({name, cdnClient, installParameters}:{
         name: string,
-        cdnClient:{install:(unknown) => Promise<Window>},
+        cdnClient:{install:(unknown) => Promise<WindowOrWorkerGlobalScope>},
         installParameters?
     }) => {
         const entry = secondaryEntries[name]
@@ -89,7 +89,7 @@ export const setup = {
         const parameters = installParameters || {}
         const scripts = [
             ...(parameters.scripts || []),
-            `@youwol/http-primitives#0.1.2~dist/@youwol/http-primitives/${entry.name}.js`
+            `@youwol/http-primitives#0.2.1-wip~dist/@youwol/http-primitives/${entry.name}.js`
         ]
         const modules = [
             ...(parameters.modules || []),
@@ -100,7 +100,7 @@ export const setup = {
             modules,
             scripts,
         }).then(() => {
-            return window[`@youwol/http-primitives/${entry.name}_APIv01`]
+            return window[`@youwol/http-primitives/${entry.name}_APIv02`]
         })
     },
     getCdnDependencies(name?: string){
