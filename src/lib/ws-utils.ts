@@ -1,4 +1,4 @@
-import { Observable, Subject } from 'rxjs'
+import { BehaviorSubject, Observable, Subject } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { ContextMessage, Label } from './local-youwol'
 
@@ -90,6 +90,7 @@ export function filterCtxMessage<T = unknown>({
 
 export class WebSocketClient<TMessage> {
     public readonly message$: Subject<TMessage>
+    public readonly connected$ = new BehaviorSubject<boolean>(false)
     public ws: WebSocket
 
     constructor(public readonly path: string) {
