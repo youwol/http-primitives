@@ -122,6 +122,10 @@ export class WebSocketClient<TMessage> {
             console.log('error', err)
             this.ws.close()
             console.log('Reconnect will be attempted in 1 second.')
+        }
+        this.ws.onclose = () => {
+            this.connected$.next(false)
+            console.log('Reconnect will be attempted in 1 second.')
             setTimeout(() => {
                 this.connectWs()
             }, 1000)
