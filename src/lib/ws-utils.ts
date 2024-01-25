@@ -102,6 +102,9 @@ export class WebSocketClient<TMessage> {
             this.ws.close()
         }
         this.ws = new WebSocket(this.path)
+        this.ws.onopen = () => {
+            this.connected$.next(true)
+        }
         this.ws.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data)
