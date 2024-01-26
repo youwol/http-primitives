@@ -1,4 +1,4 @@
-import { Observable, Subject } from 'rxjs'
+import { BehaviorSubject, Observable, Subject } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { ContextMessage, Label } from './local-youwol'
 
@@ -90,6 +90,7 @@ export function filterCtxMessage<T = unknown>({
 
 export class WebSocketClient<TMessage> {
     public readonly message$: Subject<TMessage>
+    public readonly connected$ = new BehaviorSubject<boolean>(false)
     public ws: WebSocket
 
     constructor(public readonly path: string) {
@@ -101,6 +102,9 @@ export class WebSocketClient<TMessage> {
             this.ws.close()
         }
         this.ws = new WebSocket(this.path)
+        this.ws.onopen = () => {
+            this.connected$.next(true)
+        }
         this.ws.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data)
@@ -117,6 +121,10 @@ export class WebSocketClient<TMessage> {
             )
             console.log('error', err)
             this.ws.close()
+            console.log('Reconnect will be attempted in 1 second.')
+        }
+        this.ws.onclose = () => {
+            this.connected$.next(false)
             console.log('Reconnect will be attempted in 1 second.')
             setTimeout(() => {
                 this.connectWs()
