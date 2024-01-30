@@ -88,12 +88,26 @@ export function filterCtxMessage<T = unknown>({
         ) as WebSocketResponse$<T>
 }
 
+export interface WebSocketOptions {
+    autoReconnect?: boolean
+    autoReconnectDelay?: number
+}
+
+const defaultOptions = {
+    autoReconnect: false,
+    autoReconnectDelay: 1000,
+}
 export class WebSocketClient<TMessage> {
+    public readonly options: Required<WebSocketOptions>
     public readonly message$: Subject<TMessage>
     public readonly connected$ = new BehaviorSubject<boolean>(false)
     public ws: WebSocket
 
-    constructor(public readonly path: string) {
+    constructor(
+        public readonly path: string,
+        options: WebSocketOptions = defaultOptions,
+    ) {
+        this.options = { ...defaultOptions, ...options }
         this.message$ = new Subject<TMessage>()
     }
 
@@ -114,21 +128,20 @@ export class WebSocketClient<TMessage> {
             }
         }
         this.ws.onerror = (err) => {
-            console.error(
-                'Socket encountered error: ',
-                String(err),
-                'Closing socket',
-            )
-            console.log('error', err)
+            console.error('Socket encountered error', err)
             this.ws.close()
-            console.log('Reconnect will be attempted in 1 second.')
         }
         this.ws.onclose = () => {
-            this.connected$.next(false)
-            console.log('Reconnect will be attempted in 1 second.')
-            setTimeout(() => {
-                this.connectWs()
-            }, 1000)
+            if (this.options.autoReconnect) {
+                this.connected$.next(false)
+                console.log(
+                    `Websocket on '${this.path}' closed, auto-reconnection will be attempted in 
+                        ${this.options.autoReconnectDelay} ms.`,
+                )
+                setTimeout(() => {
+                    this.connectWs()
+                }, this.options.autoReconnectDelay)
+            }
         }
         return this.message$
     }
