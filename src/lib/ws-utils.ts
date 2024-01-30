@@ -140,7 +140,7 @@ export class WebSocketClient<TMessage> {
                 )
                 setTimeout(() => {
                     this.connectWs()
-                }, 1000)
+                }, this.options.autoReconnectDelay)
             }
         }
         return this.message$
