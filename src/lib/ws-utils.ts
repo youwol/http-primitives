@@ -114,14 +114,8 @@ export class WebSocketClient<TMessage> {
             }
         }
         this.ws.onerror = (err) => {
-            console.error(
-                'Socket encountered error: ',
-                String(err),
-                'Closing socket',
-            )
-            console.log('error', err)
+            console.error('Socket encountered error', err)
             this.ws.close()
-            console.log('Reconnect will be attempted in 1 second.')
         }
         this.ws.onclose = () => {
             this.connected$.next(false)
