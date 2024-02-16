@@ -32,6 +32,10 @@ export type Label =
     | 'Label.RUN_PIPELINE_STEP'
     | 'HelmPackage'
     | 'Label.PROJECT_CREATING'
+    | 'InstallBackendEvent'
+    | 'BackendResponse'
+    | 'Label.INSTALL_BACKEND_SH'
+    | 'Label.START_BACKEND_SH'
 
 export interface ContextMessage<T = unknown> {
     contextId: string
