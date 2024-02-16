@@ -1,7 +1,7 @@
 {
     "name": "@youwol/http-primitives",
     "description": "HTTP utilities and base classes for YouWol clients",
-    "version": "0.2.3-wip",
+    "version": "0.2.3",
     "author": "greinisch@youwol.com",
     "homepage": "https://github.com/youwol/http-primitives#README.md",
     "main": "dist/@youwol/http-primitives.js",
