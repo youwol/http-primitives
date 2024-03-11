@@ -36,6 +36,8 @@ export type Label =
     | 'BackendResponse'
     | 'Label.INSTALL_BACKEND_SH'
     | 'Label.START_BACKEND_SH'
+    | 'DownloadBackendEvent'
+    | 'StartBackendEvent'
 
 export interface ContextMessage<T = unknown> {
     contextId: string

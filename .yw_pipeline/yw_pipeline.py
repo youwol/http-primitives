@@ -1,5 +1,5 @@
 from youwol.app.environment import YouwolEnvironment
-from youwol.app.environment.models_project import IPipelineFactory, JsBundle, Link, Pipeline
+from youwol.app.routers.projects import IPipelineFactory, JsBundle, Link, Pipeline
 from youwol.pipelines.pipeline_typescript_weback_npm import pipeline, PipelineConfig
 from youwol.utils.context import Context
 
