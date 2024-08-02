@@ -2,10 +2,12 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { ContextMessage, Label } from './local-youwol'
 
-export type WebSocketResponse$<T> = Observable<ContextMessage<T>>
+export type WebSocketResponse$<T, TLabel = Label> = Observable<
+    ContextMessage<T, TLabel>
+>
 
-export function filterAttributes(
-    message: ContextMessage,
+export function filterAttributes<T, TLabel = Label>(
+    message: ContextMessage<T, TLabel>,
     withAttributes?: {
         [_key: string]: string | ((string) => boolean)
     },
@@ -25,7 +27,10 @@ export function filterAttributes(
     )
 }
 
-export function filterLabels(message: ContextMessage, withLabels?: Label[]) {
+export function filterLabels<T, TLabel = Label>(
+    message: ContextMessage<T, TLabel>,
+    withLabels?: TLabel[],
+) {
     return (
         message.labels &&
         withLabels.reduce(
@@ -35,8 +40,8 @@ export function filterLabels(message: ContextMessage, withLabels?: Label[]) {
     )
 }
 
-export function filterData(
-    message: ContextMessage,
+export function filterData<T, TLabel = Label>(
+    message: ContextMessage<T, TLabel>,
     withDataAttributes?: {
         [_key: string]: string | ((string) => boolean)
     },
@@ -55,7 +60,7 @@ export function filterData(
     )
 }
 
-export function filterCtxMessage<T = unknown>({
+export function filterCtxMessage<T = unknown, TLabel = Label>({
     withAttributes,
     withDataAttributes,
     withLabels,
@@ -66,26 +71,34 @@ export function filterCtxMessage<T = unknown>({
     withDataAttributes?: {
         [_key: string]: string | ((string) => boolean)
     }
-    withLabels?: Label[]
-}): (source$: WebSocketResponse$<unknown>) => WebSocketResponse$<T> {
+    withLabels?: TLabel[]
+}): (
+    source$: WebSocketResponse$<unknown, TLabel>,
+) => WebSocketResponse$<T, TLabel> {
     withAttributes = withAttributes || {}
     withLabels = withLabels || []
-    return (source$: Observable<ContextMessage>) =>
+    return (source$: Observable<ContextMessage<unknown, TLabel>>) =>
         source$.pipe(
-            filter((message: ContextMessage) => {
-                const attrsOk = filterAttributes(message, withAttributes)
+            filter((message: ContextMessage<T, TLabel>) => {
+                const attrsOk = filterAttributes<T, TLabel>(
+                    message,
+                    withAttributes,
+                )
 
-                const labelsOk = filterLabels(message, withLabels)
+                const labelsOk = filterLabels<T, TLabel>(message, withLabels)
 
                 if (!withDataAttributes) {
                     return attrsOk && labelsOk
                 }
 
-                const dataAttrsOk = filterData(message, withDataAttributes)
+                const dataAttrsOk = filterData<T, TLabel>(
+                    message,
+                    withDataAttributes,
+                )
 
                 return attrsOk && labelsOk && dataAttrsOk
             }),
-        ) as WebSocketResponse$<T>
+        ) as WebSocketResponse$<T, TLabel>
 }
 
 export interface WebSocketOptions {

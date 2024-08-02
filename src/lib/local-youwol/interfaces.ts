@@ -1,7 +1,11 @@
 export interface HealthzResponse {
     status: 'py-youwol ok'
 }
-
+/**
+ * This is now @youwol/local-youwol-client that owns this type.
+ * It is here for backward compatibility.
+ * Ideally, only 'EnvironmentStatusResponse' should be used.
+ */
 export type Label =
     | 'Label.DONE'
     | 'Label.INFO'
@@ -39,11 +43,11 @@ export type Label =
     | 'DownloadBackendEvent'
     | 'StartBackendEvent'
 
-export interface ContextMessage<T = unknown> {
+export interface ContextMessage<T = unknown, TLabel = Label> {
     contextId: string
     level: string
     text: string
-    labels: Label[]
+    labels: TLabel[]
     parentContextId: string | undefined
     data: T
     attributes: { [key: string]: string }
