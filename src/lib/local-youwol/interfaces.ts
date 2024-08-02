@@ -45,12 +45,13 @@ export type Label =
 
 export interface ContextMessage<T = unknown, TLabel = Label> {
     contextId: string
-    level: string
+    level: 'INFO' | 'WARNING' | 'ERROR'
     text: string
     labels: TLabel[]
     parentContextId: string | undefined
     data: T
     attributes: { [key: string]: string }
+    timestamp: number
 }
 
 export type GetFileContentResponse = string
