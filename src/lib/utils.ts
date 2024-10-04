@@ -192,7 +192,8 @@ function processResponse(response) {
 
     const contentType = response.headers.get('content-type')
 
-    if (contentType == 'application/json') {
+    if (contentType.startsWith('application/json')) {
+        // e.g. 'application/json', 'application/json; charset=utf-8', ...
         return response.json().then((data) => {
             return response.ok
                 ? data
